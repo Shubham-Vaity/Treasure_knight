@@ -24,21 +24,24 @@ public class Random_enemy : MonoBehaviour
 
     IEnumerator SpawnEnemiesWithRandomDelay()
     {
-
         while (true)
         {
-                if (CountEnemies() < maxEnemies)
+            if (CountEnemies() < maxEnemies)
+            {
+                if (start)
                 {
-                     if (start)
-                        {
-                    
                     TrySpawnEnemy();
-                         }
+                }
 
-            float waitTime = Random.Range(minSpawnDelay, maxSpawnDelay);
-            yield return new WaitForSeconds(waitTime);
-                 }
+                float waitTime = Random.Range(minSpawnDelay, maxSpawnDelay);
+                yield return new WaitForSeconds(waitTime);
+            }
+            else
+            {
+                yield return null; 
+            }
         }
+
     }
     void TrySpawnEnemy()
     {
@@ -55,8 +58,16 @@ public class Random_enemy : MonoBehaviour
             Collider2D overlap = Physics2D.OverlapCircle(spawnPos, 0.5f, groundLayer);
             if (overlap == null)
             {
-                Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+                Instantiate(enemyPrefab, spawnPos, spawnPoint.transform.rotation);
             }
+            else
+            {
+
+            }
+        }
+        else
+        {
+
         }
     }
 

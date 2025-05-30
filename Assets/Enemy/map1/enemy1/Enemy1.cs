@@ -51,10 +51,10 @@ public class Enemy1 : MonoBehaviour
     void Update()
     {
 
-        randomAttack();
+       // randomAttack();
         selfDistruct();
 
-        WallDetectAndFlip();
+       WallDetectAndFlip();
         transform.Translate(speed * Time.deltaTime);
 
     }
@@ -85,8 +85,8 @@ public class Enemy1 : MonoBehaviour
                 if (randomNumber == 10)
                 {
                     isattacking = true;
-                    attack = true;
-                }
+                   attack = true;
+               }
             }
 
         }
@@ -143,7 +143,7 @@ public class Enemy1 : MonoBehaviour
         animator.SetBool("Dead", true);
 
 
-        StartCoroutine(deadlydealy(0.3f));
+     StartCoroutine(deadlydealy(0.1f));
     }
 
 

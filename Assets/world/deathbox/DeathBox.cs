@@ -19,5 +19,11 @@ public class DeathBox : MonoBehaviour
             
             }
         }
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+           
+            Destroy(collision.gameObject);  
+
+        }
     }
 }

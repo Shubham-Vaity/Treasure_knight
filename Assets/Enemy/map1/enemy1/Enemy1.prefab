@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4221384967043786709}
   - component: {fileID: 6424872022027914958}
   - component: {fileID: 4455681860432055745}
-  - component: {fileID: 6056072396072459114}
   - component: {fileID: -5317618994289939391}
   - component: {fileID: -7618564880661653843}
+  - component: {fileID: 576762338676508595}
   m_Layer: 9
   m_Name: Enemy1
   m_TagString: Enemy
@@ -143,31 +143,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &6056072396072459114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226164129024425400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48a543dcb6b365a4ba9aafaabd1e5e87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _renderer: {fileID: 4221384967043786709}
-  animator: {fileID: 6424872022027914958}
-  explosion: {fileID: 6118458815554017320, guid: 9742cafb041c32f4cba35a3168954a9e, type: 3}
-  firespot: {fileID: 4090753097922884605}
-  bullet: {fileID: 1106175306404588515, guid: 3c57b75a1d76a044fbbdf02d909ef01d, type: 3}
-  attack: 0
-  isattacking: 0
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 16
-  wallCheck: {fileID: 1657707445202916134}
-  wallCheckDistance: 1
-  facingRight: 0
 --- !u!70 &-5317618994289939391
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -242,6 +217,30 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.39, y: 0.81}
   m_Direction: 0
+--- !u!114 &576762338676508595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226164129024425400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5bb1a1e229906641b2f8d0f15d4adaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6424872022027914958}
+  fireSPot: {fileID: 4090753097922884605}
+  WallChecker: {fileID: 5567895898136962349}
+  explosion: {fileID: 6118458815554017320, guid: 9742cafb041c32f4cba35a3168954a9e, type: 3}
+  Bullet: {fileID: 1106175306404588515, guid: 3c57b75a1d76a044fbbdf02d909ef01d, type: 3}
+  speed: {x: 5, y: 0, z: 0}
+  isattacking: 1
+  FacingRight: 0
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 16
+  player: {fileID: 0}
 --- !u!1 &4090753097922884605
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +297,7 @@ Transform:
   m_GameObject: {fileID: 5567895898136962349}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.262, z: 0}
+  m_LocalPosition: {x: 0.276, y: -0.261, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

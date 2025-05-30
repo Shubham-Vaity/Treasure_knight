@@ -206,7 +206,7 @@ MonoBehaviour:
   bullet3: {fileID: 5937107065101132726, guid: 948599d0a7fcf1c4cb94446cca17ad34, type: 3}
   animator: {fileID: 1408356648683472341}
   speed: 20
-  HP: 4
+  HP: 25
   bulletDelay: 0.2
   movinRight: 0
 --- !u!61 &189292529773815447
