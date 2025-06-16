@@ -8,7 +8,10 @@ public class Gun : MonoBehaviour
 
     
     
-    public  GameObject gunpoint;
+    public  GameObject gunpointFrount;
+    public  GameObject gunpointTop;
+    public  GameObject gunpointBottum;
+    GameObject currentGunpoint;
     public GameObject projectile;
     public float bulletDelay = 0.5f;
     
@@ -21,14 +24,31 @@ public class Gun : MonoBehaviour
 
     void Start()
     {
-    
-        
+
+        currentGunpoint = gunpointFrount;
         
     }
 
 
     void Update()
     {
+
+        if (Input.GetAxis("Vertical") != 0)
+        {
+            if (Input.GetAxis("Vertical") > 0)
+            {
+                currentGunpoint = gunpointTop;
+            }
+            if (Input.GetAxis("Vertical") < 0)
+            {
+                currentGunpoint = gunpointBottum;
+            }
+        }
+        else
+        {
+            currentGunpoint = gunpointFrount;
+        }
+
 
 
         if (Input.GetAxis("Fire1") != 0)
@@ -45,7 +65,7 @@ public class Gun : MonoBehaviour
         if (bulletFired)
         {
    
-            Instantiate(projectile, gunpoint.transform.position, gunpoint.transform.rotation);
+            Instantiate(projectile, currentGunpoint.transform.position, currentGunpoint.transform.rotation);
             bulletFired = false;
 
             StartCoroutine(fireDealy(bulletDelay));
