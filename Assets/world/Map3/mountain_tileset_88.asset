@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: mountain_tileset_88
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: -1228343181, guid: 0590cbaf0fdf3544b84ac9971a0a82d0, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
   m_Transform:
     e00: 1
     e01: 0
