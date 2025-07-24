@@ -1,100 +1,174 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using System.Collections;
 
 public class Map3_enemy2 : MonoBehaviour
 {
-
     public LayerMask playerLayer;
     public Animator animator;
     public Rigidbody2D r2d;
 
+    public float patrolSpeed = 2f;
+    public float chaseSpeedMultiplier = 2f;
+    private float currentSpeed;
 
-    public float speed;
     public Vector2 rayDirection;
-
+    public float rayCastOffSet = 1f;
+    public float detectionRange = 5f;
 
     public Transform pointA;
-    public Transform pointB; 
-    public Vector3 CurrentPoint;
+    public Transform pointB;
+    private Vector3 currentTarget;
 
+    public bool facingRight = true;
+    private bool attacking = false;
 
-    public float rayCastOffSet;
-    public float detectionRange;
+    public int maxHP = 3;
+    private int currentHP;
+    private SpriteRenderer sr;
+    private Color originalColor;
 
-
-    public bool facingRight;
-    public bool attacking;
-
-
+    private float stuckTimer = 0f;
+    private float stuckDuration = 15f;
 
     private void Start()
     {
-        CurrentPoint = pointA.position;
+        currentTarget = pointA.position;
+        currentSpeed = patrolSpeed;
+        currentHP = maxHP;
 
-        InvokeRepeating("RaycastCheck", 0f, 0.1f);
+        sr = GetComponent<SpriteRenderer>();
+        originalColor = sr.color;
+
+        InvokeRepeating(nameof(RaycastCheck), 0f, 0.1f);
     }
 
     private void Update()
     {
-        move();
-    }
-
-    private void RaycastCheck()
-    {
-
-        Vector2 rayOrigin = (Vector2)transform.position + rayDirection.normalized * rayCastOffSet;
-
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, detectionRange, playerLayer);
-
-        Debug.DrawRay(rayOrigin, rayDirection * detectionRange, Color.red);
-
-        if (hit.collider != null)
+        if (!attacking)
         {
+            Patrol();
 
-
-            if (hit.collider.CompareTag("Player"))
+            // Check if stuck for too long
+            if (Vector3.Distance(transform.position, currentTarget) > 0.5f)
             {
-                attacking = true;
-                animator.SetBool("attack", true);
+                stuckTimer += Time.deltaTime;
+                if (stuckTimer >= stuckDuration)
+                {
+                    Die(); // Self-destruct
+                }
             }
             else
             {
-                animator.SetBool("attack", false);
+                stuckTimer = 0f; // Reset if reached target
             }
         }
         else
         {
-            animator.SetBool("attack", false);
+            Chase();
         }
     }
 
-
-
-    void move()
+    private void RaycastCheck()
     {
-        if (CurrentPoint != null) {
+        Vector2 rayOrigin = (Vector2)transform.position + rayDirection.normalized * rayCastOffSet;
 
-            transform.position = Vector3.MoveTowards(transform.position, CurrentPoint, speed * Time.deltaTime);
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, detectionRange, playerLayer);
+        Debug.DrawRay(rayOrigin, rayDirection * detectionRange, Color.red);
 
-            if (transform.position == CurrentPoint)
+        if (hit.collider != null && hit.collider.CompareTag("Player"))
+        {
+            attacking = true;
+            animator.SetBool("attack", true);
+        }
+        else
+        {
+            StopChase();
+        }
+    }
+
+    private void StopChase()
+    {
+        attacking = false;
+        currentSpeed = patrolSpeed;
+        animator.SetBool("attack", false);
+
+        // Flip toward current patrol target after stopping chase
+        if ((currentTarget.x < transform.position.x && facingRight) ||
+            (currentTarget.x > transform.position.x && !facingRight))
+        {
+            Flip();
+        }
+    }
+
+    private void Patrol()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, currentTarget, currentSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, currentTarget) < 0.1f)
+        {
+            currentTarget = (currentTarget == pointA.position) ? pointB.position : pointA.position;
+            Flip();
+        }
+    }
+
+    private void Chase()
+    {
+        currentSpeed = patrolSpeed * chaseSpeedMultiplier;
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            Vector3 targetPos = player.transform.position;
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, currentSpeed * Time.deltaTime);
+
+            if ((targetPos.x < transform.position.x && facingRight) ||
+                (targetPos.x > transform.position.x && !facingRight))
             {
-                CurrentPoint = (CurrentPoint == pointA.position) ? pointB.position : pointA.position;
                 Flip();
             }
-
         }
-
     }
-
-
 
     private void Flip()
     {
         facingRight = !facingRight;
-        transform.Rotate(0f, 180f, 0f);
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 
 
 
+    public void TakeDamage(int amount)
+    {
+        currentHP -= amount;
+        StartCoroutine(FlashColor());
 
+        if (currentHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    private IEnumerator FlashColor()
+    {
+        sr.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        sr.color = originalColor;
+    }
+
+    private void Die()
+    {
+        animator.SetTrigger("die");
+        Destroy(gameObject, 0.3f);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bullet"))
+        {
+            TakeDamage(1);
+            Destroy(collision.gameObject);
+        }
+    }
 }

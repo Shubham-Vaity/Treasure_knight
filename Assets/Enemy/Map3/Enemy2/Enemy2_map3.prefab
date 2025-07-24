@@ -249,16 +249,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   animator: {fileID: 6122489386000285925}
-  r2d: {fileID: 0}
-  speed: 1
+  r2d: {fileID: 7103118291187394335}
+  patrolSpeed: 1
+  chaseSpeedMultiplier: 2
   rayDirection: {x: 1, y: 0}
-  pointA: {fileID: 5822035127031755739}
-  pointB: {fileID: 6863954016982435287}
-  CurrentPoint: {x: 0, y: 0, z: 0}
   rayCastOffSet: -1.5
   detectionRange: -5
+  groundCheckDistance: 1.5
+  pointA: {fileID: 5822035127031755739}
+  pointB: {fileID: 6863954016982435287}
   facingRight: 0
-  attacking: 0
+  maxHP: 4
 --- !u!1 &1073909877223517663
 GameObject:
   m_ObjectHideFlags: 0
