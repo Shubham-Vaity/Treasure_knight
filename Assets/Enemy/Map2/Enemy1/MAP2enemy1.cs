@@ -19,6 +19,7 @@ public class MAP2enemy1 : MonoBehaviour
 
     public Vector3 speed = new Vector3(4f, 0f, 0f);
 
+    
 
     public bool isattacking;
     public bool FacingRight;
@@ -65,7 +66,7 @@ public class MAP2enemy1 : MonoBehaviour
         else
         {
             animator.SetBool("attack", false);
-            speed.x = 4;
+            speed.x = 2f;
         }
     }
 
@@ -182,7 +183,7 @@ public class MAP2enemy1 : MonoBehaviour
     IEnumerator attackdelay()
     {
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(6f);
 
         isattacking = true;
 

@@ -234,7 +234,7 @@ MonoBehaviour:
   WallChecker: {fileID: 5567895898136962349}
   explosion: {fileID: 6118458815554017320, guid: 9742cafb041c32f4cba35a3168954a9e, type: 3}
   Bullet: {fileID: 1106175306404588515, guid: 3c57b75a1d76a044fbbdf02d909ef01d, type: 3}
-  speed: {x: 2, y: 0, z: 0}
+  speed: {x: 1.5, y: 0, z: 0}
   isattacking: 1
   FacingRight: 1
   Takedamage: 0
