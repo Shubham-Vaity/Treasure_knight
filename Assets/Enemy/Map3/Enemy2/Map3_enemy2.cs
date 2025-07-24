@@ -9,13 +9,13 @@ public class Map3_enemy2 : MonoBehaviour
     public Rigidbody2D r2d;
 
 
-    public Vector3 speed = new Vector3(1,0,0);
+    public float speed;
     public Vector2 rayDirection;
 
 
-    public GameObject pointA;
-    public GameObject pointB;
-    public GameObject CurrentPoint;
+    public Transform pointA;
+    public Transform pointB; 
+    public Vector3 CurrentPoint;
 
 
     public float rayCastOffSet;
@@ -29,14 +29,14 @@ public class Map3_enemy2 : MonoBehaviour
 
     private void Start()
     {
-        CurrentPoint = pointA;
+        CurrentPoint = pointA.position;
 
         InvokeRepeating("RaycastCheck", 0f, 0.1f);
     }
 
     private void Update()
     {
-        
+        move();
     }
 
     private void RaycastCheck()
@@ -72,10 +72,15 @@ public class Map3_enemy2 : MonoBehaviour
 
     void move()
     {
-        if (CurrentPoint != null) { 
-        
-            
-        
+        if (CurrentPoint != null) {
+
+            transform.position = Vector3.MoveTowards(transform.position, CurrentPoint, speed * Time.deltaTime);
+
+            if (transform.position == CurrentPoint)
+            {
+                CurrentPoint = (CurrentPoint == pointA.position) ? pointB.position : pointA.position;
+                Flip();
+            }
 
         }
 
