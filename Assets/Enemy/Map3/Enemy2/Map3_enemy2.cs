@@ -132,11 +132,13 @@ public class Map3_enemy2 : MonoBehaviour
     private void Flip()
     {
         facingRight = !facingRight;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
-    }
 
+        // Rotate the sprite
+        transform.Rotate(0f, 180f, 0f);
+
+        // Flip the ray direction on X
+        rayDirection.x *= -1;
+    }
 
 
     public void TakeDamage(int amount)
