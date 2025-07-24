@@ -4,23 +4,34 @@ using UnityEngine.UIElements;
 public class Map3_enemy2 : MonoBehaviour
 {
 
+    public LayerMask playerLayer;
+    public Animator animator;
+    public Rigidbody2D r2d;
 
 
     public Vector3 speed = new Vector3(1,0,0);
-    public Animator animator;
     public Vector2 rayDirection;
+
+
+    public GameObject pointA;
+    public GameObject pointB;
+    public GameObject CurrentPoint;
+
+
     public float rayCastOffSet;
     public float detectionRange;
-    public LayerMask playerLayer;
 
 
+    public bool facingRight;
     public bool attacking;
 
 
 
     private void Start()
     {
-        
+        CurrentPoint = pointA;
+
+        InvokeRepeating("RaycastCheck", 0f, 0.1f);
     }
 
     private void Update()
@@ -56,4 +67,29 @@ public class Map3_enemy2 : MonoBehaviour
             animator.SetBool("attack", false);
         }
     }
+
+
+
+    void move()
+    {
+        if (CurrentPoint != null) { 
+        
+            
+        
+
+        }
+
+    }
+
+
+
+    private void Flip()
+    {
+        facingRight = !facingRight;
+        transform.Rotate(0f, 180f, 0f);
+    }
+
+
+
+
 }
