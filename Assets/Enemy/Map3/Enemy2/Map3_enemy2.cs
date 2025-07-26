@@ -30,6 +30,8 @@ public class Map3_enemy2 : MonoBehaviour
     private float stuckTimer = 0f;
     private float stuckDuration = 15f;
 
+    public GameObject explosio;
+
     private void Start()
     {
         currentTarget = pointA.position;
@@ -83,6 +85,7 @@ public class Map3_enemy2 : MonoBehaviour
         else
         {
             StopChase();
+            animator.SetBool("attack", false);
         }
     }
 
@@ -90,7 +93,7 @@ public class Map3_enemy2 : MonoBehaviour
     {
         attacking = false;
         currentSpeed = patrolSpeed;
-        animator.SetBool("attack", false);
+       
 
         // Flip toward current patrol target after stopping chase
         if ((currentTarget.x < transform.position.x && facingRight) ||
@@ -161,7 +164,9 @@ public class Map3_enemy2 : MonoBehaviour
 
     private void Die()
     {
-        animator.SetTrigger("die");
+
+        animator.SetBool("death", true);
+        Instantiate(explosio, this.transform.position, this.transform.rotation);
         Destroy(gameObject, 0.3f);
     }
 

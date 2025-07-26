@@ -254,12 +254,12 @@ MonoBehaviour:
   chaseSpeedMultiplier: 2
   rayDirection: {x: 1, y: 0}
   rayCastOffSet: -1.5
-  detectionRange: -5
-  groundCheckDistance: 1.5
+  detectionRange: -8
   pointA: {fileID: 5822035127031755739}
   pointB: {fileID: 6863954016982435287}
   facingRight: 0
   maxHP: 4
+  explosio: {fileID: 6118458815554017320, guid: 9742cafb041c32f4cba35a3168954a9e, type: 3}
 --- !u!1 &1073909877223517663
 GameObject:
   m_ObjectHideFlags: 0
