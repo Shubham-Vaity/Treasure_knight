@@ -24,10 +24,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        Debug.Log("Health: " + currentHealth);
-    }
+   
 
     public void TakeDamage(int amount)
     {
@@ -38,23 +35,26 @@ public class PlayerHealth : MonoBehaviour
         {
             healthBar.SetHealth(currentHealth);
         }
-
         if (currentHealth <= 0)
         {
-            // Add death logic here if needed
-            Debug.Log("Player Dead");
+         
+
+            PlayerMovement movement = GetComponent<PlayerMovement>();
+            if (movement != null)
+            {
+                movement.dead = true;
+                StartCoroutine(heal());
+            }
         }
+
     }
 
-    public void Heal(int amount)
+    IEnumerator heal()
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        if (healthBar != null)
-        {
-            healthBar.SetHealth(currentHealth);
-        }
+        yield return new WaitForSeconds(0.3f);
+        currentHealth = maxHealth;
     }
+
 
     void damage()
     {

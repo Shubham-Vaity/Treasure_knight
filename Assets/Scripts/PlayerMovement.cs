@@ -50,10 +50,19 @@ public class PlayerMovement : MonoBehaviour
 
         if (dead)
         {
-            transform.position = currentcheckpoint.transform.position;
-            dead = false;
+         StartCoroutine(death());  
         }
     }
+
+    IEnumerator death()
+    {
+        animator.SetBool("death", true);
+        yield return new WaitForSeconds(0.3f);
+        animator.SetBool("death", false);
+        transform.position = currentcheckpoint.transform.position;
+        dead = false;
+    }
+
 
     private void movement()
     {
