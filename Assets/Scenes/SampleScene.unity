@@ -184,7 +184,7 @@ Transform:
   m_GameObject: {fileID: 34354319}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -40.47, y: 30.01, z: -10}
+  m_LocalPosition: {x: -40.47, y: 50.07, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -278352,7 +278352,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -40.47, y: 30.01, z: -10}
+  m_LocalPosition: {x: -40.47, y: 50.07, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -502997,7 +502997,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2315418040390986344, guid: 52d8a6bd090f01d45a7d663de140881e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.01
+      value: 50.07
       objectReference: {fileID: 0}
     - target: {fileID: 2315418040390986344, guid: 52d8a6bd090f01d45a7d663de140881e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -503034,6 +503034,22 @@ PrefabInstance:
     - target: {fileID: 2953538720101728807, guid: 52d8a6bd090f01d45a7d663de140881e, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774714653036907198, guid: 52d8a6bd090f01d45a7d663de140881e, type: 3}
+      propertyPath: crouchHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774714653036907198, guid: 52d8a6bd090f01d45a7d663de140881e, type: 3}
+      propertyPath: normalHeight
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774714653036907198, guid: 52d8a6bd090f01d45a7d663de140881e, type: 3}
+      propertyPath: crouchOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774714653036907198, guid: 52d8a6bd090f01d45a7d663de140881e, type: 3}
+      propertyPath: crouchOffset.y
+      value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4258150029853357436, guid: 52d8a6bd090f01d45a7d663de140881e, type: 3}
       propertyPath: m_Name
