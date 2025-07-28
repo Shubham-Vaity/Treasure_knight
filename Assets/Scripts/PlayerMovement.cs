@@ -5,7 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public float Speed;
     public float JumpSpeed;
-    public  bool isGrounded;
+    public bool isGrounded;
     private bool facingRight = true;
 
     private int jumpCount = 0;
@@ -40,7 +40,6 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         currentcheckpoint = this.transform;
-
         normalOffset = capsuleCollider.offset;
     }
 
@@ -50,23 +49,23 @@ public class PlayerMovement : MonoBehaviour
 
         if (dead)
         {
-         StartCoroutine(death());  
+            StartCoroutine(death());
         }
     }
 
     IEnumerator death()
     {
         animator.SetBool("death", true);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         animator.SetBool("death", false);
         transform.position = currentcheckpoint.transform.position;
         dead = false;
     }
 
-
     private void movement()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
 
         // Ground & wall checks
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLasyer);
@@ -89,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Crouch logic
         bool canCrouch = isGrounded && !isGrabbingWall && Mathf.Abs(R2d.linearVelocity.y) < 0.01f;
-        bool isCrouching = Input.GetKey(KeyCode.S) && canCrouch;
+        bool isCrouching = verticalInput < 0 && canCrouch;
 
         if (isCrouching)
         {
@@ -104,6 +103,10 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isCrouching", false);
         }
 
+        // Upward aiming logic
+        bool isAimingUp = verticalInput > 0 && canCrouch;
+        animator.SetBool("up", isAimingUp);
+
         // Wall grab effects
         if (isGrabbingWall)
         {
@@ -114,9 +117,8 @@ public class PlayerMovement : MonoBehaviour
         {
             R2d.gravityScale = 1;
 
-            // Stop movement on W/S if crouching condition is true
-            bool shouldFreeze = (Input.GetKey(KeyCode.W) || isCrouching);
-
+            // Stop horizontal movement while crouching or aiming up (on ground only)
+            bool shouldFreeze = (isCrouching || isAimingUp);
             if (shouldFreeze)
             {
                 R2d.linearVelocity = new Vector2(0, R2d.linearVelocity.y);

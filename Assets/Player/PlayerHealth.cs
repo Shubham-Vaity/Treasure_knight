@@ -53,6 +53,7 @@ public class PlayerHealth : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         currentHealth = maxHealth;
+        TakeDamage(0);
     }
 
 

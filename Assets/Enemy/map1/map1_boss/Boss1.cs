@@ -230,7 +230,7 @@ public class Boss1 : MonoBehaviour
             if (playerRb != null)
             {
                 float horizontalForce = 50f;
-                float verticalForce = 5f;
+                float verticalForce = 20f;
 
                 // Calculate direction from boss to player, then reverse it
                 Vector2 direction = (collision.transform.position - transform.position).normalized;
@@ -243,7 +243,7 @@ public class Boss1 : MonoBehaviour
                 playerRb.linearVelocity = Vector2.zero; // Optional: Reset velocity for consistent force
                 playerRb.AddForce(force, ForceMode2D.Impulse);
 
-                Debug.Log("Player knocked away from boss.");
+              
             }
         }
 
