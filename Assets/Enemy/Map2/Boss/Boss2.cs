@@ -6,12 +6,14 @@ public class Boss2 : MonoBehaviour
     [Header("References")]
     public GameObject firespot;
     public GameObject bullet1;
+    public GameObject bombPrefab;
     public Animator animator;
 
     [Header("Settings")]
     public float floatSpeed = 2f;
     public int HP = 10;
     public float attackInterval = 4f;
+    public Vector3 bombDropOffset = new Vector3(0f, -1f, 0f);
 
     [Header("State")]
     private bool isDead = false;
@@ -24,14 +26,18 @@ public class Boss2 : MonoBehaviour
     public Vector3 rightLimit = new Vector3(170f, 15f, 0f);
     private bool movingRight = true;
 
-    // Internal
     private GameObject player;
     private SpriteRenderer sr;
+    private float nextBombTime;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+
+        CheckInitialDirection();
+        ScheduleNextBomb();
+
         StartCoroutine(AttackLoop());
     }
 
@@ -40,9 +46,24 @@ public class Boss2 : MonoBehaviour
         if (!isDead && !isAttacking)
         {
             Patrol();
+            HandleBombDropping();
         }
 
         AimAtPlayer();
+    }
+
+    void CheckInitialDirection()
+    {
+        float distToLeft = Vector3.Distance(transform.position, leftLimit);
+        float distToRight = Vector3.Distance(transform.position, rightLimit);
+        movingRight = distToRight < distToLeft;
+
+        bool shouldFaceRight = movingRight;
+
+        if ((shouldFaceRight && !facingRight) || (!shouldFaceRight && facingRight))
+        {
+            Flip();
+        }
     }
 
     void Patrol()
@@ -55,6 +76,7 @@ public class Boss2 : MonoBehaviour
             if (transform.position.x >= rightLimit.x)
             {
                 movingRight = false;
+                Flip();
             }
         }
         else
@@ -63,8 +85,32 @@ public class Boss2 : MonoBehaviour
             if (transform.position.x <= leftLimit.x)
             {
                 movingRight = true;
+                Flip();
             }
         }
+    }
+
+    void HandleBombDropping()
+    {
+        if (Time.time >= nextBombTime && bombPrefab != null)
+        {
+            Vector3 spawnPos = transform.position + bombDropOffset;
+            Instantiate(bombPrefab, spawnPos, Quaternion.identity);
+            ScheduleNextBomb();
+        }
+    }
+
+    void ScheduleNextBomb()
+    {
+        nextBombTime = Time.time + Random.Range(1f, 3f);
+    }
+
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 
     void AimAtPlayer()
@@ -73,8 +119,11 @@ public class Boss2 : MonoBehaviour
 
         Vector3 direction = player.transform.position - firespot.transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        firespot.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        // Flip the angle if the fire is facing the wrong direction
+        firespot.transform.rotation = Quaternion.AngleAxis(angle + 180f, Vector3.forward);
     }
+
 
     IEnumerator AttackLoop()
     {
