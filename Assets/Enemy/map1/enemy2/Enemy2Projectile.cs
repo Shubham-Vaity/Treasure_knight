@@ -57,14 +57,14 @@ public class Enemy2Projectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Floor"))
         {
 
-            Destroy(gameObject);
+            StartCoroutine(dealy());
         }
 
 
         if (collision.gameObject.CompareTag("Player"))
         {
 
-            Destroy(gameObject);
+            StartCoroutine(dealy());
         }
     }
 
@@ -77,6 +77,14 @@ public class Enemy2Projectile : MonoBehaviour
     {
 
         yield return new WaitForSeconds(buttletDelay);
+
+        Destroy(gameObject);
+
+    }
+    IEnumerator dealy()
+    {
+
+        yield return new WaitForSeconds(0.1f);
 
         Destroy(gameObject);
 

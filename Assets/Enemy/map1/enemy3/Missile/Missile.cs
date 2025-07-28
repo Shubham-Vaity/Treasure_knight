@@ -74,7 +74,7 @@ public class Missile : MonoBehaviour
     {
         Instantiate(explosion, this.transform.position, this.transform.rotation);
 
-        Destroy(gameObject);
+        StartCoroutine(explosionDelay());
 
     }
 
@@ -90,7 +90,13 @@ public class Missile : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         expoad();
+        
+    }
+    IEnumerator explosionDelay()
+    {
+        yield return new WaitForSeconds(0.1f);
         Destroy(gameObject);
+
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -98,13 +104,13 @@ public class Missile : MonoBehaviour
         if (collision.CompareTag("Floor")) 
         {
             expoad();
-            Destroy(gameObject);
+          
         }
 
         if (collision.CompareTag("Player"))
         {
             expoad();
-            Destroy(gameObject);
+          
         }
 
 
