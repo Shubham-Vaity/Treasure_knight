@@ -25,8 +25,8 @@ public class Boss1 : MonoBehaviour
 
 
     // Internal
-    private Vector3 leftpos = new Vector3(145.0f, 15.0f, 0.0f);
-    private Vector3 rightpos = new Vector3(175.0f, 15.0f, 0.0f);
+    private Vector3 leftpos = new Vector3(148.0f, 15.0f, 0.0f);
+    private Vector3 rightpos = new Vector3(165.0f, 15.0f, 0.0f);
     private GameObject player;
     private SpriteRenderer sr;
 
