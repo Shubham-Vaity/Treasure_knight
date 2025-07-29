@@ -1,66 +1,59 @@
 using UnityEngine;
+using System.Collections;
 
 public class BossType3 : MonoBehaviour
 {
-    [Header("Movement")]
     public Transform leftPoint;
     public Transform rightPoint;
-    public float speed = 3f;
+    public float moveSpeed = 3f;
     private bool movingRight = true;
 
-    [Header("Attack Settings")]
-    public GameObject bulletPrefab;
+    public Transform fireSpot;
     public GameObject flamePrefab;
+    public GameObject bulletPrefab;
     public GameObject bombPrefab;
-    public Transform firePoint;
     public Transform bombDropPoint;
-    public float attackInterval = 3f;
+    public Transform player;
+    public Transform groundCheck;
 
-    [Header("Jump Attack")]
-    public float rayDistance = 5f;
     public LayerMask playerLayer;
-    public float jumpForce = 10f;
+    public float raycastDistance = 5f;
+    public float jumpForce = 7f;
     public Rigidbody2D rb;
+    public Animator anim;
 
-    private GameObject player;
-    private float attackTimer = 0f;
     private bool isAttacking = false;
-    private bool isJumping = false;
-    private Vector3 originalScale;
+    private bool isGrounded;
 
-    void Start()
+    private void Start()
     {
-        originalScale = transform.localScale;
-        player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        StartCoroutine(RandomAttackRoutine());
     }
 
-    void Update()
+    private void Update()
     {
-        if (isAttacking || isJumping) return;
+        if (!isAttacking)
+            Patrol();
 
-        Patrol();
-        DetectPlayerWithRaycast();
-
-        attackTimer += Time.deltaTime;
-        if (attackTimer >= attackInterval)
-        {
-            attackTimer = 0f;
-            StartRandomAttack();
-        }
+        CheckPlayerRay();
     }
 
     void Patrol()
     {
-        float direction = movingRight ? 1 : -1;
-        transform.Translate(Vector2.right * direction * speed * Time.deltaTime);
-
-        if (movingRight && transform.position.x >= rightPoint.position.x)
+        if (movingRight)
         {
-            Flip(false);
+            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            if (transform.position.x >= rightPoint.position.x)
+                Flip(false);
         }
-        else if (!movingRight && transform.position.x <= leftPoint.position.x)
+        else
         {
-            Flip(true);
+            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+            if (transform.position.x <= leftPoint.position.x)
+                Flip(true);
         }
     }
 
@@ -72,73 +65,93 @@ public class BossType3 : MonoBehaviour
         transform.localScale = scale;
     }
 
-    void StartRandomAttack()
+    void AimFireSpotAtPlayer()
     {
-        isAttacking = true;
-        int attackType = Random.Range(0, 3); // 0, 1, 2
+        if (player == null || fireSpot == null) return;
+        Vector3 dir = player.position - fireSpot.position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        fireSpot.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
 
-        switch (attackType)
+    IEnumerator RandomAttackRoutine()
+    {
+        while (true)
         {
-            case 0: Invoke(nameof(SingleShot), 0.5f); break;
-            case 1: StartCoroutine(BurstShot()); break;
-            case 2: StartCoroutine(FlameThrower()); break;
+            yield return new WaitForSeconds(Random.Range(3f, 6f));
+
+            if (!isAttacking)
+            {
+                int attack = Random.Range(0, 2); // 0 = flame, 1 = spread burst
+                isAttacking = true;
+                AimFireSpotAtPlayer();
+
+                if (attack == 0)
+                    StartCoroutine(FlameThrowerAttack());
+                else
+                    StartCoroutine(SpreadShotBurst());
+            }
         }
     }
 
-    void SingleShot()
+    IEnumerator FlameThrowerAttack()
     {
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        anim.SetTrigger("Flame");
+        Instantiate(flamePrefab, fireSpot.position, fireSpot.rotation);
+        yield return new WaitForSeconds(1.5f);
         isAttacking = false;
     }
 
-    System.Collections.IEnumerator BurstShot()
+    IEnumerator SpreadShotBurst()
     {
-        for (int i = 0; i < 3; i++)
+        anim.SetTrigger("Shoot");
+        int burstCount = Random.Range(3, 6);
+        for (int i = 0; i < burstCount; i++)
         {
-            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            yield return new WaitForSeconds(0.3f);
+            FireSpreadBullets();
+            yield return new WaitForSeconds(0.2f);
         }
+        yield return new WaitForSeconds(0.5f);
         isAttacking = false;
     }
 
-    System.Collections.IEnumerator FlameThrower()
+    void FireSpreadBullets()
     {
-        GameObject flame = Instantiate(flamePrefab, firePoint.position, firePoint.rotation);
-        yield return new WaitForSeconds(2f);
-        Destroy(flame);
-        isAttacking = false;
+        float[] angles = { -15f, 0f, 15f };
+        foreach (float a in angles)
+        {
+            Quaternion rot = fireSpot.rotation * Quaternion.Euler(0, 0, a);
+            Instantiate(bulletPrefab, fireSpot.position, rot);
+        }
     }
 
-    void DetectPlayerWithRaycast()
+    void CheckPlayerRay()
     {
         Vector2 direction = movingRight ? Vector2.right : Vector2.left;
-        RaycastHit2D hit = Physics2D.Raycast(firePoint.position, direction, rayDistance, playerLayer);
+        Debug.DrawRay(transform.position, direction * raycastDistance, Color.red);
 
-        Debug.DrawRay(firePoint.position, direction * rayDistance, Color.red);
-
-        if (hit.collider != null && hit.collider.CompareTag("Player"))
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, raycastDistance, playerLayer);
+        if (hit.collider != null && IsGrounded() && !isAttacking)
         {
-            StartCoroutine(JumpAndDropBomb());
+            StartCoroutine(JumpAttack());
         }
     }
 
-    System.Collections.IEnumerator JumpAndDropBomb()
+    bool IsGrounded()
     {
-        isJumping = true;
+        return Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
+    }
+
+    IEnumerator JumpAttack()
+    {
         isAttacking = true;
 
-        Vector3 preAttackScale = transform.localScale;
-
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        yield return new WaitForSeconds(0.5f);
-
+        // Drop bomb
         Instantiate(bombPrefab, bombDropPoint.position, Quaternion.identity);
 
-        yield return new WaitForSeconds(1.5f); // Wait to land
+        // Jump
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
-        // Restore direction and state
-        transform.localScale = preAttackScale;
-        isJumping = false;
+        yield return new WaitForSeconds(1.5f);
         isAttacking = false;
     }
 }
