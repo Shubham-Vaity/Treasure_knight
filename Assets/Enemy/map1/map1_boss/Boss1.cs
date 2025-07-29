@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class Boss1 : MonoBehaviour
@@ -203,10 +204,15 @@ public class Boss1 : MonoBehaviour
 
     IEnumerator death()
     {
+        if (!isDead)
+        {
+
         isDead = true;
         animator.SetBool("dead", true);
-        yield return new WaitForSeconds(1.5f);
-        Destroy(gameObject);
+        StartCoroutine(NextStage(5f));
+        yield return new WaitForSeconds(0.1f);
+            animator.SetBool("dead", false);
+        }
     }
 
 
@@ -248,5 +254,12 @@ public class Boss1 : MonoBehaviour
         }
 
     }
+
+    IEnumerator NextStage(float time)
+    {
+        yield return new WaitForSeconds(time);
+        SceneManager.LoadScene(2); 
+    }
+
 
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class BossSummoner : MonoBehaviour
@@ -27,9 +29,17 @@ public class BossSummoner : MonoBehaviour
 
             if (!bossSpawned)
             {
-                Instantiate(Boss, bossSpawnPoint.transform.position, bossSpawnPoint.transform.rotation);
+                StartCoroutine(spawnboss());
                 bossSpawned = true;
             }
         }
+    }
+
+
+    IEnumerator spawnboss()
+    {
+        yield return new WaitForSeconds(3.5f);
+
+        Instantiate(Boss, bossSpawnPoint.transform.position, bossSpawnPoint.transform.rotation);
     }
 }

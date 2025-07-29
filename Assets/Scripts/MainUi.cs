@@ -39,7 +39,7 @@ public class MainUi : MonoBehaviour
      IEnumerator playGame()
     {
         yield return new WaitForSeconds(0.5f);
-        SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadSceneAsync(1);
     }
 
 
