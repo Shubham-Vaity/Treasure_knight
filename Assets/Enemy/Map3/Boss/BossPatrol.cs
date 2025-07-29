@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class BossPatrol : MonoBehaviour
@@ -26,6 +27,12 @@ public class BossPatrol : MonoBehaviour
     public float burstCooldown = 5f;
     public float timeBetweenBursts = 0.4f;
 
+    [Header("Health Settings")]
+    public float maxHealth = 100f;
+    public float hitColorDuration = 0.2f;
+    public Color hitColor = Color.red;
+
+    private float currentHealth;
     private Rigidbody2D rb;
     private bool movingToEnd = true;
     private bool facingRight = true;
@@ -35,15 +42,29 @@ public class BossPatrol : MonoBehaviour
     private bool isAttacking = false;
     private float burstTimer = 0f;
 
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+    private bool isImmune = false;
+    private bool isDead = false;
+
+    private Animator animator;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
+        animator = GetComponent<Animator>();
+
+        currentHealth = maxHealth;
         jumpTimer = Random.Range(1f, jumpCooldown);
-        burstTimer = Random.Range(2f, burstCooldown); // Initial delay before first shot
+        burstTimer = Random.Range(2f, burstCooldown);
     }
 
     void FixedUpdate()
     {
+        if (isDead) return;
+
         if (!isAttacking)
         {
             Patrol();
@@ -53,12 +74,11 @@ public class BossPatrol : MonoBehaviour
         HandleRandomJump();
         HandleBombDrop();
 
-        // Trigger spread attack randomly by timer
         burstTimer -= Time.fixedDeltaTime;
         if (burstTimer <= 0f && IsGrounded())
         {
             StartCoroutine(SpreadShotBurst());
-            burstTimer = Random.Range(5f, burstCooldown + 5f); // Reset timer
+            burstTimer = Random.Range(5f, burstCooldown + 5f);
         }
     }
 
@@ -134,7 +154,7 @@ public class BossPatrol : MonoBehaviour
         isAttacking = true;
         Vector3 originalScale = transform.localScale;
 
-        int burstCount = Random.Range(2, 6); // 2�5 bursts
+        int burstCount = Random.Range(2, 6);
         for (int b = 0; b < burstCount; b++)
         {
             FireSpread();
@@ -164,6 +184,44 @@ public class BossPatrol : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float damage)
+    {
+        if (isDead || isImmune) return;
+
+        currentHealth -= damage;
+        StartCoroutine(ShowHitColor());
+
+        if (currentHealth <= 0f)
+        {
+            Die();
+        }
+    }
+
+    IEnumerator ShowHitColor()
+    {
+        isImmune = true;
+        spriteRenderer.color = hitColor;
+        yield return new WaitForSeconds(hitColorDuration);
+        spriteRenderer.color = originalColor;
+        isImmune = false;
+    }
+
+    void Die()
+    {
+        isDead = true;
+        rb.linearVelocity = Vector2.zero;
+        animator.SetBool("IsDead", true);
+        GetComponent<Collider2D>().enabled = false;
+        animator.SetBool("IsDead", false);
+        StartCoroutine(GoToNextScene());
+    }
+
+    IEnumerator GoToNextScene()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(4);
+    }
+
     bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
@@ -175,5 +233,17 @@ public class BossPatrol : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+
+
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            TakeDamage(1);
+        }
+
     }
 }

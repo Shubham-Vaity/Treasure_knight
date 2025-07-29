@@ -321,3 +321,6 @@ MonoBehaviour:
   bulletSpeed: 7
   burstCooldown: 5
   timeBetweenBursts: 0.4
+  maxHealth: 40
+  hitColorDuration: 0.2
+  hitColor: {r: 1, g: 0, b: 0, a: 1}
