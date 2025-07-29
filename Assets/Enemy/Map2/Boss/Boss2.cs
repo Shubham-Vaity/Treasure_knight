@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class Boss2 : MonoBehaviour
 {
@@ -27,6 +29,8 @@ public class Boss2 : MonoBehaviour
     private bool movingRight = true;
 
     private GameObject player;
+    public GameObject explosion;
+    public GameObject bigexplosion;
     private SpriteRenderer sr;
     private float nextBombTime;
 
@@ -140,7 +144,7 @@ public class Boss2 : MonoBehaviour
     IEnumerator FlamethrowerAttack()
     {
         isAttacking = true;
-        animator.SetBool("attack3", true);
+      
 
         float timer = 0f;
         float duration = 2.5f;
@@ -152,7 +156,7 @@ public class Boss2 : MonoBehaviour
             timer += 0.1f;
         }
 
-        animator.SetBool("attack3", false);
+       
         isAttacking = false;
     }
 
@@ -160,6 +164,7 @@ public class Boss2 : MonoBehaviour
     {
         if (!immunityFrames)
         {
+            
             StartCoroutine(FlashDamageColor());
             immunityFrames = true;
             HP--;
@@ -175,9 +180,11 @@ public class Boss2 : MonoBehaviour
 
     IEnumerator FlashDamageColor()
     {
-        sr.color = new Color(1f, 0.7f, 0.7f);
+        
+        animator.SetBool("hit", true);
         yield return new WaitForSeconds(0.1f);
-        sr.color = Color.white;
+        animator.SetBool("hit", false);
+        
     }
 
     IEnumerator DamageCooldown(float time)
@@ -190,8 +197,16 @@ public class Boss2 : MonoBehaviour
     {
         isDead = true;
         animator.SetBool("dead", true);
-        yield return new WaitForSeconds(1.5f);
-        Destroy(gameObject);
+        for (int i = 0; i < 3; i++)
+        {
+            Instantiate(explosion, firespot.transform.position, firespot.transform.rotation);
+        }
+        StartCoroutine(NextStage(2f));
+        yield return new WaitForSeconds(0.5f);
+        transform.localScale = transform.localScale * 3;
+        animator.SetBool("dead", false);
+        Instantiate(bigexplosion, firespot.transform.position, firespot.transform.rotation);
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -213,4 +228,11 @@ public class Boss2 : MonoBehaviour
             }
         }
     }
+
+    IEnumerator NextStage(float time)
+    {
+        yield return new WaitForSeconds(time);
+        SceneManager.LoadScene(3);
+    }
+
 }

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4702021687638628726}
   m_Layer: 0
   m_Name: Boss2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1834182393183631562}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 524.6, y: 2.15, z: 0}
+  m_LocalPosition: {x: 524.6, y: 2.15, z: -1}
   m_LocalScale: {x: 6.4537, y: 6.4537, z: 6.4537}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -204,11 +204,13 @@ MonoBehaviour:
   bombPrefab: {fileID: 8549654172723274058, guid: e2723797680a040428be334c06eeaefd, type: 3}
   animator: {fileID: 4515727930522914281}
   floatSpeed: 6
-  HP: 25
+  HP: 35
   attackInterval: 4
   bombDropOffset: {x: 0, y: -1, z: 0}
   leftLimit: {x: 505, y: 4, z: 0}
   rightLimit: {x: 545, y: 4, z: 0}
+  explosion: {fileID: 6118458815554017320, guid: 9742cafb041c32f4cba35a3168954a9e, type: 3}
+  bigexplosion: {fileID: 6118458815554017320, guid: 6d880e0a026e7694faaec32c282ebcff, type: 3}
 --- !u!1 &7426361847144142940
 GameObject:
   m_ObjectHideFlags: 0
