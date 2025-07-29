@@ -56,10 +56,10 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator death()
     {
         animator.SetBool("death", true);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2.5f);
+        dead = false;
         animator.SetBool("death", false);
         transform.position = currentcheckpoint.transform.position;
-        dead = false;
     }
 
     private void movement()

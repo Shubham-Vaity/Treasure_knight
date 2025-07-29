@@ -212,13 +212,15 @@ public class BossPatrol : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         animator.SetBool("IsDead", true);
         GetComponent<Collider2D>().enabled = false;
-        animator.SetBool("IsDead", false);
+        Instantiate(bombPrefab, this.transform.position, Quaternion.identity);
         StartCoroutine(GoToNextScene());
+        
     }
 
     IEnumerator GoToNextScene()
     {
-        yield return new WaitForSeconds(2f);
+        
+        yield return new WaitForSeconds(4f);
         SceneManager.LoadScene(4);
     }
 

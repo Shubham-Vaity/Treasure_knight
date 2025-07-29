@@ -34,8 +34,13 @@ public class Map2CS : MonoBehaviour
             {
                 done = true;
             StartCoroutine(spawnboss());
+                Random_enemy[] spawners = FindObjectsOfType<Random_enemy>();
+                foreach (Random_enemy spawner in spawners)
+                {
+                    spawner.start = false;
 
-            
+                }
+
                 director.Play();
             
             }

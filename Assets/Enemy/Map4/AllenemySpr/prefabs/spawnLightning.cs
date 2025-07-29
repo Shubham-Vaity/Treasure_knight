@@ -18,7 +18,7 @@ public class spawnLightning : MonoBehaviour
     void rnd()
     {
         int randomNumber = Random.Range(0, 100);
-        if(randomNumber > 90)
+        if(randomNumber > 70)
         {
             Instantiate(lightning, firespot.transform.position, firespot.transform.rotation);
         }

@@ -83,5 +83,10 @@ public class PlayerHealth : MonoBehaviour
         {
             damage();
         }
+        if (collision.gameObject.CompareTag("Respawn"))
+        {
+            Destroy(collision.gameObject);
+            StartCoroutine(heal());
+        }
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.XR;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -14,11 +15,16 @@ public class EnemyHealth : MonoBehaviour
     public Color hitColor = Color.red;
     public float colorResetDelay = 0.1f;
 
+    [Header("Immunity Settings")]
+    public float immunityDuration = 0.5f;
+    private bool isImmune = false;
+
     [Header("Explosion Settings")]
     public GameObject explosionPrefab;
     public int minExplosions = 8;
     public int maxExplosions = 10;
     public float explosionRadius = 2f;
+    public float explosionDelay = 0.2f; // Delay between each explosion
 
     private Color originalColor;
 
@@ -31,10 +37,11 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isDead) return;
+        StartCoroutine(FlashHitColor());
+        if (isDead || isImmune) return;
 
         currentHealth -= damage;
-        StartCoroutine(FlashHitColor());
+        StartCoroutine(ActivateImmunity());
 
         if (currentHealth <= 0)
         {
@@ -46,37 +53,44 @@ public class EnemyHealth : MonoBehaviour
     {
         if (spriteRenderer != null)
         {
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            spriteRenderer.color = hitColor;
             yield return new WaitForSeconds(colorResetDelay);
             spriteRenderer.color = originalColor;
         }
     }
 
+    private IEnumerator ActivateImmunity()
+    {
+        isImmune = true;
+        yield return new WaitForSeconds(immunityDuration);
+        isImmune = false;
+    }
+
     private void Die()
     {
         isDead = true;
+        if (spriteRenderer != null)
+            spriteRenderer.enabled = false;
 
-        // Spawn explosions
+        StartCoroutine(SpawnExplosionsAndChangeScene());
+    }
+
+    private IEnumerator SpawnExplosionsAndChangeScene()
+    {
         int explosionCount = Random.Range(minExplosions, maxExplosions + 1);
+
         for (int i = 0; i < explosionCount; i++)
         {
             Vector2 offset = Random.insideUnitCircle * explosionRadius;
             Instantiate(explosionPrefab, transform.position + (Vector3)offset, Quaternion.identity);
+            yield return new WaitForSeconds(explosionDelay);
         }
 
-        // Optional: Disable visuals before scene switch
-        if (spriteRenderer != null)
-            spriteRenderer.enabled = false;
-
-        // Switch to scene index 4 after short delay
-        StartCoroutine(SwitchSceneAfterDelay(0.5f));
+        // After explosions, change scene
+        SceneManager.LoadScene(5);
     }
 
-    private IEnumerator SwitchSceneAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene(4);
-    }
+
 
 
     private void OnTriggerEnter2D(Collider2D collision)

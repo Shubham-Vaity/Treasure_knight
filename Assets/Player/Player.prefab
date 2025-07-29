@@ -306,7 +306,7 @@ MonoBehaviour:
   capsuleCollider: {fileID: 7767341810595870366}
   normalHeight: 1.2
   crouchHeight: 0.5
-  crouchOffset: {x: 0.4, y: 0}
+  crouchOffset: {x: 0, y: -0.4}
 --- !u!114 &8386270664044700520
 MonoBehaviour:
   m_ObjectHideFlags: 0

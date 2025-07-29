@@ -1161,7 +1161,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -1189,14 +1189,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77be7a7422a4d404a9c1644b1537b35a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 40
-  spriteRenderer: {fileID: 0}
+  maxHealth: 25
+  spriteRenderer: {fileID: 8773954643103961915}
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   colorResetDelay: 0.1
+  immunityDuration: 0.3
   explosionPrefab: {fileID: 6118458815554017320, guid: 6d880e0a026e7694faaec32c282ebcff, type: 3}
   minExplosions: 8
   maxExplosions: 10
   explosionRadius: 8
+  explosionDelay: 0.2
 --- !u!1 &6533728190935555832
 GameObject:
   m_ObjectHideFlags: 0
@@ -1812,7 +1814,7 @@ MonoBehaviour:
   bomb: {fileID: 8549654172723274058, guid: a56a455ae3b4f7f46b9b01b416b84bc9, type: 3}
   bulletSpeed: 10
   spreadAngle: 40
-  shootInterval: 2.5
+  shootInterval: 1.5
 --- !u!1 &9023622850217495620
 GameObject:
   m_ObjectHideFlags: 0
