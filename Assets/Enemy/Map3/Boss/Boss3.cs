@@ -1,63 +1,62 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class BossPatrol : MonoBehaviour
 {
-    public Vector3 startPoint;
-    public Vector3 endPoint;
+    public float patrolStartX;
+    public float patrolEndX;
     public float moveSpeed = 3f;
-    public float reachThreshold = 0.2f;
-    public float jumpForce = 10f;
+    public float reachThreshold = 0.1f;
+    public float jumpForce = 7f;
+    public float rayLength = 3f;
     public LayerMask playerLayer;
-    public float detectionRange = 3f;
+
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
 
+    private Rigidbody2D rb;
     private bool movingToEnd = true;
     private bool facingRight = true;
-    private Rigidbody2D rb;
-    private Transform player;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
-
-        if (player == null)
-            Debug.LogWarning("Player not found. Make sure the Player has the 'Player' tag.");
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Patrol();
-        DetectPlayerAndJump();
+        DetectAndJump();
     }
 
     void Patrol()
     {
-        Vector3 target = movingToEnd ? endPoint : startPoint;
-        Vector3 nextPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-        rb.MovePosition(nextPosition);
+        float targetX = movingToEnd ? patrolEndX : patrolStartX;
+        float direction = Mathf.Sign(targetX - transform.position.x);
 
-        if (target.x > transform.position.x && !facingRight)
-            Flip();
-        else if (target.x < transform.position.x && facingRight)
-            Flip();
+        rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
 
-        if (Vector3.Distance(transform.position, target) < reachThreshold)
+        if ((movingToEnd && transform.position.x >= patrolEndX) ||
+            (!movingToEnd && transform.position.x <= patrolStartX))
+        {
             movingToEnd = !movingToEnd;
+        }
+
+        if (direction > 0 && !facingRight)
+            Flip();
+        else if (direction < 0 && facingRight)
+            Flip();
     }
 
-    void DetectPlayerAndJump()
+    void DetectAndJump()
     {
-        Vector2 rayOrigin = transform.position;
         Vector2 rayDirection = facingRight ? Vector2.right : Vector2.left;
+        Vector2 rayOrigin = transform.position;
 
-        Debug.DrawRay(rayOrigin, rayDirection * detectionRange, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayLength, playerLayer);
+        Debug.DrawRay(rayOrigin, rayDirection * rayLength, Color.red); // Visible ray in Scene view
 
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, detectionRange, playerLayer);
-        if (hit.collider != null && IsGrounded())
+        if (hit.collider != null && hit.collider.CompareTag("Player") && IsGrounded())
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }

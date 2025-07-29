@@ -4014,9 +4014,9 @@ TextureImporter:
       name: Assets_City_176
       rect:
         serializedVersion: 2
-        x: 112
+        x: 113
         y: 32
-        width: 16
+        width: 15
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
