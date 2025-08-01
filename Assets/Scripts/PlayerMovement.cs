@@ -26,9 +26,11 @@ public class PlayerMovement : MonoBehaviour
 
     public Transform currentcheckpoint;
     public bool dead;
+    
 
     // Crouch-related
     public CapsuleCollider2D capsuleCollider;
+    public CapsuleCollider2D capsuleCollider2;
     public float normalHeight = 2f;
     public float crouchHeight = 1f;
     private Vector2 normalOffset;
@@ -94,12 +96,16 @@ public class PlayerMovement : MonoBehaviour
         {
             capsuleCollider.size = new Vector2(capsuleCollider.size.x, crouchHeight);
             capsuleCollider.offset = crouchOffset;
+            capsuleCollider2.size = new Vector2(capsuleCollider2.size.x, crouchHeight);
+            capsuleCollider2.offset = crouchOffset;
             animator.SetBool("isCrouching", true);
         }
         else
         {
             capsuleCollider.size = new Vector2(capsuleCollider.size.x, normalHeight);
             capsuleCollider.offset = normalOffset;
+            capsuleCollider2.size = new Vector2(capsuleCollider2.size.x, normalHeight);
+            capsuleCollider2.offset = normalOffset;
             animator.SetBool("isCrouching", false);
         }
 
@@ -147,6 +153,10 @@ public class PlayerMovement : MonoBehaviour
             Flip();
         else if (horizontalInput < 0 && facingRight)
             Flip();
+
+
+
+
     }
 
     private void Flip()

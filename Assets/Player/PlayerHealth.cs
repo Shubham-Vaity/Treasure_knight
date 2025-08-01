@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class PlayerHealth : MonoBehaviour
 
     public HPBar healthBar;
     public bool CanTakeDamage = true;
+
+    public GameObject startScreen;
+    public GameObject PauseScreen;
+
 
     void Start()
     {
@@ -22,9 +27,18 @@ public class PlayerHealth : MonoBehaviour
         {
             healthBar.SetMaxHealth(maxHealth);
         }
+
+
+        Time.timeScale = 0f; // Pause game immediately
+        StartCoroutine(UnpauseAfterDelay());
     }
 
-   
+    IEnumerator UnpauseAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(5f); // Wait 5 real-time seconds
+        startScreen.SetActive(false);   
+        Time.timeScale = 1f; // Resume game
+    }
 
     public void TakeDamage(int amount)
     {
@@ -88,5 +102,32 @@ public class PlayerHealth : MonoBehaviour
             Destroy(collision.gameObject);
             StartCoroutine(heal());
         }
+    }
+
+
+
+
+    public void pause()
+    {
+        Time.timeScale = 0f;
+        
+
+        PauseScreen.SetActive(true);
+        Debug.Log("Pausw");
+    }
+
+
+    public void unpause()
+    {
+        Time.timeScale = 1f;
+        PauseScreen.SetActive(false);
+        Debug.Log("unPausw");
+    }
+
+
+    public void Quit()
+    {
+        Debug.Log("Q");
+        SceneManager.LoadScene(0);
     }
 }

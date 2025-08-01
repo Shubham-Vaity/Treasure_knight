@@ -304,6 +304,7 @@ MonoBehaviour:
   currentcheckpoint: {fileID: 0}
   dead: 0
   capsuleCollider: {fileID: 7767341810595870366}
+  capsuleCollider2: {fileID: 1418416109918110571}
   normalHeight: 1.2
   crouchHeight: 0.5
   crouchOffset: {x: 0, y: -0.4}
