@@ -211,6 +211,7 @@ MonoBehaviour:
   rightLimit: {x: 545, y: 4, z: 0}
   explosion: {fileID: 6118458815554017320, guid: 9742cafb041c32f4cba35a3168954a9e, type: 3}
   bigexplosion: {fileID: 6118458815554017320, guid: 6d880e0a026e7694faaec32c282ebcff, type: 3}
+  sound: {fileID: 8300000, guid: d8bdc105867d213428413f91a66997e6, type: 3}
 --- !u!1 &7426361847144142940
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,6 +27,7 @@ public class Enemy1 : MonoBehaviour
     public Transform wallCheck;
     public float wallCheckDistance = 4f;
     public bool facingRight;
+    
 
 
 
@@ -144,6 +145,7 @@ public class Enemy1 : MonoBehaviour
 
 
      StartCoroutine(deadlydealy(0.1f));
+
     }
 
 
@@ -176,6 +178,8 @@ public class Enemy1 : MonoBehaviour
         Vector3 enemyPosition = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
 
         yield return new WaitForSeconds(buttletDelay);
+
+
 
         Instantiate(explosion, enemyPosition, this.transform.rotation);
 

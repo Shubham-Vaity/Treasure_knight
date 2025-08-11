@@ -168,3 +168,4 @@ MonoBehaviour:
   bulletSpeed: 20
   spriteRenderer: {fileID: 3056755647025452313}
   r2d: {fileID: 110969084824095129}
+  sound: {fileID: 8300000, guid: 582511313031e1e42a695309f54f1d96, type: 3}

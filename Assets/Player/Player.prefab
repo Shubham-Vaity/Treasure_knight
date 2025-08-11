@@ -84,7 +84,7 @@ MonoBehaviour:
   start: 1
   minSpawnDelay: 2
   maxSpawnDelay: 6
-  maxEnemies: 30
+  maxEnemies: 60
 --- !u!1 &4258150029853357436
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,7 +287,7 @@ MonoBehaviour:
   Speed: 10
   JumpSpeed: 8
   isGrounded: 0
-  maxJumps: 1
+  maxJumps: 2
   sprite: {fileID: 2953538720101728807}
   groundLasyer:
     serializedVersion: 2
@@ -325,6 +325,7 @@ MonoBehaviour:
   gunpointBottum: {fileID: 4608528260230538453}
   projectile: {fileID: 746093659827843130, guid: 45104fbcea2515e4885bee71afe87786, type: 3}
   bulletDelay: 0.1
+  gunsound: {fileID: 8300000, guid: 9b3732eece034ee46a96dcbe2bb1dd7d, type: 3}
 --- !u!114 &3980036573310938510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,6 +353,8 @@ MonoBehaviour:
   maxHealth: 100
   healthBar: {fileID: 0}
   CanTakeDamage: 1
+  startScreen: {fileID: 0}
+  PauseScreen: {fileID: 0}
 --- !u!70 &1418416109918110571
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -599,4 +602,4 @@ MonoBehaviour:
   start: 1
   minSpawnDelay: 4
   maxSpawnDelay: 8
-  maxEnemies: 30
+  maxEnemies: 60

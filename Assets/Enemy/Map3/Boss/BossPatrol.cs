@@ -49,6 +49,8 @@ public class BossPatrol : MonoBehaviour
 
     private Animator animator;
 
+    public AudioClip sound;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -189,6 +191,7 @@ public class BossPatrol : MonoBehaviour
         if (isDead || isImmune) return;
 
         currentHealth -= damage;
+        AudioSource.PlayClipAtPoint(sound, transform.position);
         StartCoroutine(ShowHitColor());
 
         if (currentHealth <= 0f)

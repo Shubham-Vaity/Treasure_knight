@@ -17,7 +17,7 @@ public class Missile : MonoBehaviour
 
     public GameObject explosion;
 
-
+    public AudioClip sound;
 
 
     void Start()
@@ -73,6 +73,7 @@ public class Missile : MonoBehaviour
     public void expoad()
     {
         Instantiate(explosion, this.transform.position, this.transform.rotation);
+        AudioSource.PlayClipAtPoint(sound, transform.position);
 
         StartCoroutine(explosionDelay());
 

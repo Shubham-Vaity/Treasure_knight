@@ -202,3 +202,4 @@ MonoBehaviour:
   homingDuration: 3
   spriteRenderer: {fileID: 4669108688214088220}
   explosion: {fileID: 6118458815554017320, guid: 9742cafb041c32f4cba35a3168954a9e, type: 3}
+  sound: {fileID: 8300000, guid: 582511313031e1e42a695309f54f1d96, type: 3}

@@ -7,8 +7,8 @@ public class Enemy2Projectile : MonoBehaviour
 
     public float bulletSpeed;
 
-     
 
+    public AudioClip sound;
 
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D r2d;
@@ -20,7 +20,7 @@ public class Enemy2Projectile : MonoBehaviour
     void Start()
     {
 
-       
+        AudioSource.PlayClipAtPoint(sound, transform.position);
 
         StartCoroutine(fireDealy(1.5f));
 

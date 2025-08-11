@@ -28,6 +28,7 @@ public class EnemyHealth : MonoBehaviour
 
     private Color originalColor;
 
+    public AudioClip sound;
     void Start()
     {
         currentHealth = maxHealth;
@@ -40,6 +41,8 @@ public class EnemyHealth : MonoBehaviour
         StartCoroutine(FlashHitColor());
         if (isDead || isImmune) return;
 
+
+        AudioSource.PlayClipAtPoint(sound, transform.position);
         currentHealth -= damage;
         StartCoroutine(ActivateImmunity());
 

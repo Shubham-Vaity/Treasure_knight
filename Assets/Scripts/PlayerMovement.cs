@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform currentcheckpoint;
     public bool dead;
     
+    
 
     // Crouch-related
     public CapsuleCollider2D capsuleCollider;
@@ -57,11 +58,13 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator death()
     {
+        
         animator.SetBool("death", true);
         yield return new WaitForSeconds(2.5f);
         dead = false;
         animator.SetBool("death", false);
         transform.position = currentcheckpoint.transform.position;
+        
     }
 
     private void movement()

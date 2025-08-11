@@ -1199,6 +1199,7 @@ MonoBehaviour:
   maxExplosions: 10
   explosionRadius: 8
   explosionDelay: 0.2
+  sound: {fileID: 8300000, guid: d8bdc105867d213428413f91a66997e6, type: 3}
 --- !u!1 &6533728190935555832
 GameObject:
   m_ObjectHideFlags: 0

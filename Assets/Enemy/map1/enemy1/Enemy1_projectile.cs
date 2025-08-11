@@ -14,7 +14,7 @@ public class Enemy1_projectile : MonoBehaviour
 
 
 
-
+    public AudioClip sound;
 
     void Start()
     {
@@ -22,7 +22,7 @@ public class Enemy1_projectile : MonoBehaviour
 
 
         StartCoroutine(fireDealy(1.5f));
-
+        AudioSource.PlayClipAtPoint(sound, transform.position);
     }
 
 

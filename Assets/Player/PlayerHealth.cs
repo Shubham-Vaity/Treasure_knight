@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,8 @@ public class PlayerHealth : MonoBehaviour
 
     public GameObject startScreen;
     public GameObject PauseScreen;
+
+ 
 
 
     void Start()
@@ -38,6 +41,8 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSecondsRealtime(5f); // Wait 5 real-time seconds
         startScreen.SetActive(false);   
         Time.timeScale = 1f; // Resume game
+
+      
     }
 
     public void TakeDamage(int amount)

@@ -15,6 +15,7 @@ public class Gun : MonoBehaviour
 
     private PlayerMovement player; // ← reference to your movement script
 
+    public AudioClip gunsound;
     void Start()
     {
         currentGunpoint = gunpointFrount;
@@ -59,6 +60,7 @@ public class Gun : MonoBehaviour
     {
         if (bulletFired)
         {
+            AudioSource.PlayClipAtPoint(gunsound, transform.position);
             Instantiate(projectile, currentGunpoint.transform.position, currentGunpoint.transform.rotation);
             bulletFired = false;
             StartCoroutine(fireDealy(bulletDelay));

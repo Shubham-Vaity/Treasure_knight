@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpeed: -20
+  sound: {fileID: 8300000, guid: 582511313031e1e42a695309f54f1d96, type: 3}
   spriteRenderer: {fileID: 7230475341496678524}
   r2d: {fileID: 5400924657229360899}
 --- !u!95 &4945007518000408579

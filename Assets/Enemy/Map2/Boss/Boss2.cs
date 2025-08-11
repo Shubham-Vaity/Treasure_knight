@@ -34,6 +34,7 @@ public class Boss2 : MonoBehaviour
     private SpriteRenderer sr;
     private float nextBombTime;
 
+    public AudioClip sound;
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -167,6 +168,7 @@ public class Boss2 : MonoBehaviour
             
             StartCoroutine(FlashDamageColor());
             immunityFrames = true;
+            AudioSource.PlayClipAtPoint(sound, transform.position);
             HP--;
 
             if (HP <= 0 && !isDead)

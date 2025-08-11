@@ -13,7 +13,14 @@ public class MainUi : MonoBehaviour
     public TextMeshProUGUI textComponent;
     public float typeSpeed = 0.05f;
     public string fullText;
+    public AudioClip currentStageMusic;
 
+
+
+    private void Start()
+    {
+          AudioSource.PlayClipAtPoint(currentStageMusic, transform.position);
+    }
     public void PlayButton()
     {
         mainUi.SetActive(false);

@@ -205,10 +205,12 @@ MonoBehaviour:
   bullet2: {fileID: 2865705719033729816, guid: c5ea77496234a4347b933a45347785c6, type: 3}
   bullet3: {fileID: 5937107065101132726, guid: 948599d0a7fcf1c4cb94446cca17ad34, type: 3}
   animator: {fileID: 1408356648683472341}
+  explosion: {fileID: 6118458815554017320, guid: 9742cafb041c32f4cba35a3168954a9e, type: 3}
   speed: 10
   HP: 40
   bulletDelay: 0.2
   movinRight: 0
+  sound: {fileID: 8300000, guid: d8bdc105867d213428413f91a66997e6, type: 3}
 --- !u!61 &189292529773815447
 BoxCollider2D:
   m_ObjectHideFlags: 0

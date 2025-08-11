@@ -10,7 +10,7 @@ public class Boss1 : MonoBehaviour
     public GameObject bullet2;
     public GameObject bullet3;
     public Animator animator;
-
+    public GameObject explosion;
 
     [Header("Settings")]
     public float speed = 2f;
@@ -30,6 +30,8 @@ public class Boss1 : MonoBehaviour
     private Vector3 rightpos = new Vector3(165.0f, 15.0f, 0.0f);
     private GameObject player;
     private SpriteRenderer sr;
+
+    public AudioClip sound;
 
     void Start()
     {
@@ -178,6 +180,7 @@ public class Boss1 : MonoBehaviour
         if (!imunityframes)
         {
             imunityframes = true;
+            AudioSource.PlayClipAtPoint(sound, transform.position);
             HP--;
 
 
@@ -209,12 +212,19 @@ public class Boss1 : MonoBehaviour
 
         isDead = true;
         animator.SetBool("dead", true);
+            StartCoroutine(explo());
         StartCoroutine(NextStage(5f));
         yield return new WaitForSeconds(0.1f);
             animator.SetBool("dead", false);
         }
     }
 
+    IEnumerator explo()
+    {
+        Instantiate(explosion, firespot.transform.position, firespot.transform.rotation);
+        yield return new WaitForSeconds(1f);
+        Instantiate(explosion, this.transform.position, this.transform.rotation);
+    }
 
 
     IEnumerator DamageCooldown(float time)
